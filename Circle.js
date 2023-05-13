@@ -124,6 +124,7 @@ export class ProgressCircle extends Component {
         <Surface
           width={size}
           height={size}
+          fill="none"
           style={
             indeterminate && rotation
               ? {
@@ -170,6 +171,7 @@ export class ProgressCircle extends Component {
           )}
           {border ? (
             <Arc
+              fill={fill}
               radius={size / 2}
               startAngle={0}
               endAngle={(indeterminate ? endAngle * 2 : 2) * Math.PI}
