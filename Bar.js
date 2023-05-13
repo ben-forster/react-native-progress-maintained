@@ -9,6 +9,7 @@ const BAR_WIDTH_ZERO_POSITION =
 export default class ProgressBar extends Component {
   static propTypes = {
     animated: PropTypes.bool,
+    animatedReset: PropTypes.bool,
     borderColor: PropTypes.string,
     borderRadius: PropTypes.number,
     borderWidth: PropTypes.number,
@@ -29,6 +30,7 @@ export default class ProgressBar extends Component {
 
   static defaultProps = {
     animated: true,
+    animatedReset: true,
     borderRadius: 4,
     borderWidth: 1,
     color: 'rgba(0, 122, 255, 1)',
@@ -80,12 +82,16 @@ export default class ProgressBar extends Component {
         : Math.min(Math.max(this.props.progress, 0), 1);
 
       if (this.props.animated) {
-        const { animationType, animationConfig } = this.props;
-        Animated[animationType](this.state.progress, {
-          ...animationConfig,
-          toValue: progress,
-          useNativeDriver: this.props.useNativeDriver,
-        }).start();
+        if (!props.animateReset && progress === 0) {
+          this.state.progress.setValue(progress);
+        } else {
+          const { animationType, animationConfig } = this.props;
+          Animated[animationType](this.state.progress, {
+            ...animationConfig,
+            toValue: progress,
+            useNativeDriver: props.useNativeDriver,
+          }).start();
+        }
       } else {
         this.state.progress.setValue(progress);
       }
